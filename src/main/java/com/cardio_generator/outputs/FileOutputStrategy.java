@@ -7,6 +7,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Strategy that creates files with a patient's data
+ * 
+ * The class implements the interface OutputStrategy
+ */
+
 public class FileOutputStrategy implements OutputStrategy {
 
     // Changed variable name to camelCase
@@ -21,6 +27,15 @@ public class FileOutputStrategy implements OutputStrategy {
     // Changed variable name to camelCase
         this.baseDirectory = baseDirectory;
     }
+
+     /**
+     * Outputs the data to the file 
+     *
+     * @param patientId identifier (integer) of the patient
+     * @param timestamp timestamp of the data
+     * @param label label of the data
+     * @param data data associated with the patient
+     */
 
     @Override
     public void output(int patientId, long timestamp, String label, String data) {
