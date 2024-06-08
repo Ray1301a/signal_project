@@ -3,6 +3,10 @@ package com.cardio_generator.generators;
 import java.util.Random;
 
 import com.cardio_generator.outputs.OutputStrategy;
+/**
+* Generates and output alert data for patients
+* The class implements the interface PatiantDataGenerator
+ */
 
 public class AlertGenerator implements PatientDataGenerator {
 
@@ -16,6 +20,12 @@ public class AlertGenerator implements PatientDataGenerator {
     public AlertGenerator(int patientCount) {
         alertStates = new boolean[patientCount + 1];
     }
+    /**
+    * Generates alert data by simulating a patient alert, based on predefined probabilities, indicating whether it is resolved or triggered.
+    *@param patientId identifier (integer) of the patient we are generating the alert data for
+    * @param outputStrategy startegy to output the alert
+    * @throws Exception if illegal argument 
+    */
 
     @Override
     public void generate(int patientId, OutputStrategy outputStrategy) {
