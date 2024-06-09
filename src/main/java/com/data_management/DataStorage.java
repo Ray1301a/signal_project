@@ -21,6 +21,16 @@ public class DataStorage {
      */
     public DataStorage() {
         this.patientMap = new HashMap<>();
+        /**
+     * Returns the singleton instance of the DataStorage class.
+     * 
+     * @return the singleton instance of the DataStorage class
+     */
+    public static DataStorage getInstance(){
+        if(instance == null){
+            instance = new DataStorage();
+        }
+        return instance;
     }
 
     /**
@@ -41,7 +51,16 @@ public class DataStorage {
         if (patient == null) {
             patient = new Patient(patientId);
             patientMap.put(patientId, patient);
-        }
+        } else {
+            // Check if there exists the record
+            List<PatientRecord> records = patient.getRecords(timestamp, timestamp);
+            for(int i = records.size()-1; i>=0; i--){
+                if(records.get(i).getRecordType().equals(recordType) && records.get(i).getMeasurementValue() == measurementValue){
+                    System.out.println("Record already exists");
+                    return;
+                }
+            }
+        }    
         patient.addRecord(measurementValue, recordType, timestamp);
     }
 
@@ -65,6 +84,31 @@ public class DataStorage {
         }
         return new ArrayList<>(); // return an empty list if no patient is found
     }
+        public PatientRecord getRecord(int patientId, long timestamp) {
+    Patient patient = patientMap.get(patientId);
+    if (patient != null) {
+        List<PatientRecord> patientRecords = patient.getRecords(timestamp, timestamp);
+        if (!patientRecords.isEmpty()) {
+            return patientRecords.get(0);
+        }
+    }
+    return null; // return null if no patient or record is found
+}
+
+/**
+ * Calculate the total number of records stored in the data storage
+ * 
+ * @return the total number of records
+ */
+   public int getTotalNumberOfRecords() {
+        int totalCount = 0;
+        for (Patient patient : patientMap.values()) {
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+        totalCount += records.size();
+        }
+        return totalCount;
+    }
+
 
     /**
      * Retrieves a collection of all patients stored in the data storage.
@@ -74,6 +118,36 @@ public class DataStorage {
     public List<Patient> getAllPatients() {
         return new ArrayList<>(patientMap.values());
     }
+        
+/**
+ * Displays all patients and their records.
+ */
+public void displayAllPatients() {
+    for (Patient patient : patientMap.values()) {
+        for (PatientRecord record : patient.getRecords(0, Long.MAX_VALUE)) {
+            System.out.printf("Patient ID: %d, Type: %s, Data: %.2f, Timestamp: %d%n", 
+                              record.getPatientId(), 
+                              record.getRecordType(), 
+                              record.getMeasurementValue(), 
+                              record.getTimestamp());
+        }
+    }
+}
+
+/**
+ * Retrieves a patient object from the patientMap.
+ * 
+ * @param message the message containing the patient ID
+ * @return the patient object
+ */
+public Patient retrievePatient(String message) {
+    String[] parts = message.split(",");
+    String[] patientInfo = parts[0].split(":");
+    int patientId = Integer.parseInt(patientInfo[1].trim());
+
+    return patientMap.computeIfAbsent(patientId, id -> new Patient(id));
+}
+
 
     /**
      * The main method for the DataStorage class.
@@ -82,7 +156,7 @@ public class DataStorage {
      * 
      * @param args command line arguments
      */
-    public static void main(String[] args) {
+   /** public static void main(String[] args) {
         // DataReader is not defined in this scope, should be initialized appropriately.
         // DataReader reader = new SomeDataReaderImplementation("path/to/data");
         DataStorage storage = new DataStorage();
@@ -107,5 +181,5 @@ public class DataStorage {
         for (Patient patient : storage.getAllPatients()) {
             alertGenerator.evaluateData(patient);
         }
-    }
+    }*/
 }
