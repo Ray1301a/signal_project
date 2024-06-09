@@ -1,0 +1,4 @@
+The alert generation system continuously monitors patients in the cardiovascular unit, triggering alerts for medical staff based on individualized thresholds. It comprises three main classes: AlertGenerator, Alert, 
+and AlertManager. The AlertGenerator processes data streams from devices like blood pressure and oxygen saturation monitors, comparing them against personalized thresholds stored in the Cardiovascular Health Management
+  System (CHMS). When a threshold is exceeded, an Alert object is instantiated. The Alert class encapsulates relevant information about the generated alert, facilitating communication between the AlertGenerator and 
+  AlertManager. The AlertManager oversees the distribution of alerts, ensuring they reach the appropriate medical staff or devices promptly for necessary medical intervention.
