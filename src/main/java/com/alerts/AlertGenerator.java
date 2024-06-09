@@ -1,4 +1,4 @@
-package com.alerts;
+ppackage com.alerts;
 
 import com.data_management.DataStorage;
 import com.data_management.Patient;
@@ -48,5 +48,6 @@ public class AlertGenerator {
      */
     private void triggerAlert(Alert alert) {
         // Implementation might involve logging the alert or notifying staff
+         System.out.println("Alert triggered for Patient ID: " + alert.getPatientId() + ", Condition: " + alert.getCondition() + ", Timestamp: " + alert.getTimestamp());
     }
 }
